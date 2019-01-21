@@ -1,18 +1,16 @@
-
-.phony: all clean realclean
+.phony: all clean
 
 CXX = g++
-CXXFLAGS = -g -std=c++11 -Wall -ansi -pedantic
-
 PRACTICALSOCKET_PATH = /external/PracticalSocket/
-
-INCLUDES = -I$(PRACTICALSOCKET_PATH)
-LDFLAGS  = -L$(PRACTICALSOCKET_PATH)
+INCLUDES += -I$(PRACTICALSOCKET_PATH) -I/usr/local/include 
+LDFLAGS  += -L$(PRACTICALSOCKET_PATH) -L/usr/local/lib
+CXXFLAGS += -g -std=c++11 -Wall -ansi -pedantic  $(INCLUDES) 
+OPENCV_EXTRAS = `pkg-config --cflags --libs  opencv`
 
 all: udp_client
 
 udp_client: udp_client.cpp $(PRACTICALSOCKET_PATH)PracticalSocket.cpp $(PRACTICALSOCKET_PATH)PracticalSocket.h
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(INCLUDES) -o udp_client udp_client.cpp $(PRACTICALSOCKET_PATH)PracticalSocket.cpp
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) udp_client.cpp $(PRACTICALSOCKET_PATH)PracticalSocket.cpp -o udp_client
 
 clean:
 	rm -rf udp_client udp_client.o
